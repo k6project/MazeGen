@@ -1,9 +1,9 @@
-#include "MazeGen.hpp"
+#include "MazeGen.h"
 
 #include <cstdio>
 
-#include <Generator/Maze.hpp>
-#include <Generator/Recursive.hpp>
+#include <Generator/Maze.h>
+#include <Generator/Recursive.h>
 
 int main(int _argc, const char **_argv)
 {

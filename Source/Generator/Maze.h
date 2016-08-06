@@ -4,7 +4,7 @@
 #include <memory>
 #include <cstdint>
 
-#include <Core/Property.hpp>
+#include <Core/Property.h>
 
 #define MAZE_MIN_ROWS     4
 #define MAZE_MIN_COLS     4

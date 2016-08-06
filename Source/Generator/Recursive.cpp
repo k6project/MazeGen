@@ -1,9 +1,9 @@
-#include "Recursive.hpp"
+#include "Recursive.h"
 
 #include <algorithm>
 
-#include <Generator/Maze.hpp>
-#include <Generator/Random.hpp>
+#include <Generator/Maze.h>
+#include <Generator/Random.h>
 
 bool RecursiveDivision(Maze &maze)
 {

@@ -1,4 +1,4 @@
-#include "Maze.hpp"
+#include "Maze.h"
 
 Maze::Maze()
     : Cells(nullptr)
