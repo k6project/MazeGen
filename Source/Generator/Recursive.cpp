@@ -1,15 +1,43 @@
 #include "Recursive.h"
 
+#include <queue>
 #include <algorithm>
 
 #include <Generator/Maze.h>
 #include <Generator/Random.h>
 
+struct Rect
+{
+    Maze::IndexType Top, Left, Width, Height;
+    
+    // split horizontally
+    // split vertically
+    
+    bool CanSubdivide() const
+    {
+        return false;
+    }
+    
+};
+
 bool RecursiveDivision(Maze &maze)
 {
-    std::size_t numCells = maze.GetRows() * maze.GetColumns();
+    std::queue<Rect> subAreas;
+    Rect area = { 1, 1, 1, 1 };
+    area.Height = maze.GetRows() - 2;
+    area.Width = maze.GetColumns() - 2;
     
-    return false;
+    subAreas.push(area);
+    while (!subAreas.empty())
+    {
+        Rect current = subAreas.front();
+        if (current.CanSubdivide())
+        {
+        }
+        subAreas.pop();
+    }
+    
+    return true;
 }
 
 //

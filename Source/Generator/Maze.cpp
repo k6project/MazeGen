@@ -1,38 +1,28 @@
 #include "Maze.h"
 
-Maze::Maze()
-    : Cells(nullptr)
-    , Error(MazeError::ME_NOERR)
-    , Rows(0)
-    , Columns(0)
-{
-}
-
-bool Maze::Generate(SizeType rows, SizeType cols)
+bool Maze::Generate(IndexType rows, IndexType cols)
 {
     Rows = (rows < MAZE_MIN_ROWS) ? MAZE_MIN_ROWS : rows;
     Columns = (cols < MAZE_MIN_COLS) ? MAZE_MIN_COLS : cols;
     std::size_t size = Rows * Columns;
     Cells.reset(new CellType[size]);
-
-    /// add a new generation parameter - minimum dimensions of a room
-    /// if minimum size is 2, then to be split in each dimension room has to be at least 5 in size
-    /// so room 10 rows by 2 columns can be split only vertically
-    /// terminal condition: if one of area dimensions is 1, skip it
-    /// eventually there will be no areas left to subdivide
     
-    for (SizeType r = 0; r < Rows; r++)
+    for (IndexType r = 0; r < Rows; r++)
     {
-        for (SizeType c = 0; c < Columns; c++)
+        for (IndexType c = 0; c < Columns; c++)
         {
-            //
+            if (((c == 0) || (c == Columns - 1)) &&
+                ((r == 0) || (r == Rows - 1)))
+            {
+                Cells[r * Columns + c] = CellType::CT_WALL;
+            }
         }
     }
     
     return true;
 }
 
-CellType Maze::GetCellAt(SizeType row, SizeType col) const
+CellType Maze::GetCellAt(IndexType row, IndexType col) const
 {
     if ((row >= 0 && row < GetRows()) && (col >= 0 && col < GetColumns()))
     {
@@ -44,7 +34,7 @@ CellType Maze::GetCellAt(SizeType row, SizeType col) const
     }
 }
 
-void Maze::SetCellAt(SizeType row, SizeType col, CellType type)
+void Maze::SetCellAt(IndexType row, IndexType col, CellType type)
 {
     if ((row >= 0 && row < GetRows()) && (col >= 0 && col < GetColumns()))
     {

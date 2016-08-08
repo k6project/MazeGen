@@ -5,14 +5,19 @@
 #include <Generator/Maze.h>
 #include <Generator/Recursive.h>
 
-int main(int _argc, const char **_argv)
+SC::Application * CreateSCApplication()
+{
+    return SC::Application::Create<MazeGen>();
+}
+
+int _old_main(int _argc, const char **_argv)
 {
     Maze maze;
     maze.Generate(16, 16);
     
-    for (Maze::SizeType r = 0; r < maze.GetRows(); r++)
+    for (Maze::IndexType r = 0; r < maze.GetRows(); r++)
     {
-        for (Maze::SizeType c = 0; c < maze.GetColumns(); c++)
+        for (Maze::IndexType c = 0; c < maze.GetColumns(); c++)
         {
             putc('.', stdout);
         }
