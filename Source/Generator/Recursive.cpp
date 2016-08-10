@@ -20,14 +20,14 @@ struct Rect
         Maze::IndexType t = top, l = left;
         switch (neighbour)
         {
-            case Neighbour::ABOVE:  t = (t > 0) ? t - 1 : t; break;
-            case Neighbour::BELOW:  t = (t < maze.GetRows() - 1) ? t + 1 : t; break;
-            case Neighbour::BEFORE: l = (l > 0) ? l - 1 : l; break;
-            case Neighbour::AFTER:  l = (l < maze.GetColumns() - 1) ? l + 1 : l; break;
+            case Neighbour::ABOVE:  --t; break;
+            case Neighbour::BELOW:  ++t; break;
+            case Neighbour::BEFORE: --l; break;
+            case Neighbour::AFTER:  ++l; break;
         }
-        if ((maze.GetCellAt(top, left) == CellType::CT_WALL) && (maze.GetCellAt(t, l) != CellType::CT_WALL))
+        if ((maze[top][left] == CellType::WALL) && (maze[t][l] != CellType::WALL))
         {
-            maze.SetCellAt(top, left, CellType::CT_PATH);
+            maze.SetCellAt(top, left, CellType::PATH);
             return true;
         }
         return false;

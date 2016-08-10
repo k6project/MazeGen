@@ -9,7 +9,7 @@ Maze::RowProxy::RowProxy(CellType *row, Maze::IndexType max)
 
 CellType Maze::RowProxy::operator[](Maze::IndexType index)
 {
-    return (index < Max) ? Row[index] : CellType::CT_INVALID;
+    return (index < Max) ? Row[index] : CellType::INVALID;
 }
 
 Maze::RowProxy Maze::operator[](IndexType index)
@@ -31,7 +31,7 @@ bool Maze::Generate(IndexType rows, IndexType cols)
             if (((c == 0) || (c == Columns - 1)) &&
                 ((r == 0) || (r == Rows - 1)))
             {
-                Cells[r * Columns + c] = CellType::CT_WALL;
+                Cells[r * Columns + c] = CellType::WALL;
             }
         }
     }
@@ -47,7 +47,7 @@ CellType Maze::GetCellAt(IndexType row, IndexType col) const
     }
     else
     {
-        return CellType::CT_INVALID;
+        return CellType::INVALID;
     }
 }
 
@@ -69,7 +69,7 @@ void Maze::PlaceWall(IndexType top, IndexType left, IndexType width, IndexType h
         {
             for (IndexType col = left; col < maxColumn; ++col)
             {
-                Cells[row * Columns + col] = CellType::CT_WALL;
+                Cells[row * Columns + col] = CellType::WALL;
             }
         }
     }

@@ -11,14 +11,9 @@
 #define MAZE_DEFAULT_ROWS 32
 #define MAZE_DEFAULT_COLS 32
 
-enum class MazeError
-{
-    ME_NOERR, ME_INVROWS, ME_INVCOLS, ME_ALLOC
-};
-
 enum class CellType
 {
-    CT_INVALID = 0, CT_WALL, CT_ENTRY, CT_EXIT, CT_PATH, CT_TYPES
+    INVALID = 0, WALL, ENTRY, EXIT, PATH, MAX
 };
 
 class Maze
