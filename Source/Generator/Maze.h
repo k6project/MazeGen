@@ -24,6 +24,8 @@ public:
     typedef uint32 SizeType;
     
     typedef uint16 IndexType;
+
+    static_assert((sizeof(SizeType) >> 1) >= sizeof(IndexType), "Size type is too small");
     
     enum ErrorCode
     {
