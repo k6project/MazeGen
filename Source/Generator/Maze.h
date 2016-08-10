@@ -2,9 +2,9 @@
 
 #include <string>
 #include <memory>
-#include <cstdint>
 
 #include <Core/Property.h>
+#include <Engine/Platform/IntTypes.h>
 
 #define MAZE_MIN_ROWS     3
 #define MAZE_MIN_COLS     3
@@ -26,20 +26,41 @@ class Maze
     
 public:
     
-    typedef uint32_t SizeType;
+    typedef uint32 SizeType;
     
-    typedef uint16_t IndexType;
+    typedef uint16 IndexType;
     
     enum ErrorCode
     {
         NOERR = 0, INVSIZE, BADALLOC
     };
     
+    class RowProxy
+    {
+        
+    public:
+        
+        RowProxy(CellType *row = nullptr, IndexType max = 0);
+        
+        CellType operator [](IndexType index);
+    
+    private:
+        
+        CellType *Row;
+        
+        IndexType Max;
+    
+    };
+    
+    RowProxy operator[](IndexType index);
+    
     bool Generate(IndexType rows = MAZE_DEFAULT_ROWS, IndexType cols = MAZE_DEFAULT_COLS);
     
     CellType GetCellAt(IndexType row, IndexType col) const;
     
     void SetCellAt(IndexType row, IndexType col, CellType type);
+    
+    void PlaceWall(IndexType top, IndexType left, IndexType width, IndexType height);
     
     ErrorCode GetError() const;
 

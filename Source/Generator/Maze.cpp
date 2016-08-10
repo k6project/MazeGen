@@ -1,5 +1,22 @@
 #include "Maze.h"
 
+#include <algorithm>
+
+Maze::RowProxy::RowProxy(CellType *row, Maze::IndexType max)
+    : Row(row), Max(max)
+{
+}
+
+CellType Maze::RowProxy::operator[](Maze::IndexType index)
+{
+    return (index < Max) ? Row[index] : CellType::CT_INVALID;
+}
+
+Maze::RowProxy Maze::operator[](IndexType index)
+{
+    return (index < Rows) ? RowProxy(Cells.get() + (index * Columns), Columns) : RowProxy();
+}
+
 bool Maze::Generate(IndexType rows, IndexType cols)
 {
     Rows = (rows < MAZE_MIN_ROWS) ? MAZE_MIN_ROWS : rows;
@@ -39,6 +56,22 @@ void Maze::SetCellAt(IndexType row, IndexType col, CellType type)
     if ((row >= 0 && row < GetRows()) && (col >= 0 && col < GetColumns()))
     {
         Cells[row * GetColumns() + col] = type;
+    }
+}
+
+void Maze::PlaceWall(IndexType top, IndexType left, IndexType width, IndexType height)
+{
+    IndexType maxRow = top + height;
+    IndexType maxColumn = left + width;
+    if ((top >= 0 && maxRow <= Rows) && (left >= 0 && maxColumn <= Columns))
+    {
+        for (IndexType row = top; row < maxRow; ++row)
+        {
+            for (IndexType col = left; col < maxColumn; ++col)
+            {
+                Cells[row * Columns + col] = CellType::CT_WALL;
+            }
+        }
     }
 }
 

@@ -6,16 +6,55 @@
 #include <Generator/Maze.h>
 #include <Generator/Random.h>
 
+#define FL_HORIZONTAL 0x01
+#define FL_VERTCICAL  0x02
+
 struct Rect
 {
     Maze::IndexType Top, Left, Width, Height;
     
-    // split horizontally
-    // split vertically
+    enum class Neighbour { ABOVE, BELOW, BEFORE, AFTER };
     
-    bool CanSubdivide() const
+    bool UnBlock(Maze &maze, Maze::IndexType top, Maze::IndexType left, Neighbour neighbour)
     {
+        Maze::IndexType t = top, l = left;
+        switch (neighbour)
+        {
+            case Neighbour::ABOVE:  t = (t > 0) ? t - 1 : t; break;
+            case Neighbour::BELOW:  t = (t < maze.GetRows() - 1) ? t + 1 : t; break;
+            case Neighbour::BEFORE: l = (l > 0) ? l - 1 : l; break;
+            case Neighbour::AFTER:  l = (l < maze.GetColumns() - 1) ? l + 1 : l; break;
+        }
+        if ((maze.GetCellAt(top, left) == CellType::CT_WALL) && (maze.GetCellAt(t, l) != CellType::CT_WALL))
+        {
+            maze.SetCellAt(top, left, CellType::CT_PATH);
+            return true;
+        }
         return false;
+    }
+    
+    std::pair<Rect, Rect> HorizontalSplit(Maze &maze)
+    {
+        Rect one = *this, two = *this;
+        Maze::IndexType wallOffset = Width >> 1; //TODO Randomize
+        Maze::IndexType wallGlobalOffset = Left + wallOffset;
+        maze.PlaceWall(Top, wallGlobalOffset, 1, Height);
+        if (!UnBlock(maze, Top, wallGlobalOffset, Neighbour::ABOVE) &&
+            !UnBlock(maze, Top + Height - 1, wallGlobalOffset, Neighbour::BELOW))
+        {
+            //TODO place random door
+        }
+        two.Left = wallGlobalOffset + 1;
+        two.Width = Width - wallOffset - 1;
+        one.Width = wallOffset;
+        return std::make_pair(one, two);
+    }
+    
+    int CanSubdivide() const
+    {
+        int retVal = (Width >= MAZE_MIN_COLS) ? FL_HORIZONTAL : 0;
+        retVal |= (Height >= MAZE_MIN_ROWS) ? FL_VERTCICAL : 0;
+        return retVal;
     }
     
 };
@@ -31,8 +70,20 @@ bool RecursiveDivision(Maze &maze)
     while (!subAreas.empty())
     {
         Rect current = subAreas.front();
-        if (current.CanSubdivide())
+        int canSubdivide = current.CanSubdivide();
+        if (canSubdivide != 0)
         {
+            int req = (current.Width > current.Height) ? FL_HORIZONTAL : FL_VERTCICAL;
+            int subdivision = ((req & canSubdivide) > 0) ? req : canSubdivide;
+            switch (subdivision)
+            {
+                case FL_HORIZONTAL:
+                    //
+                    break;
+                case FL_VERTCICAL:
+                    //
+                    break;
+            }
         }
         subAreas.pop();
     }
