@@ -1,10 +1,6 @@
 #pragma once
 
-#include <string>
-#include <memory>
-
 #include <Core/Property.h>
-#include <Engine/Platform/IntTypes.h>
 
 #define MAZE_MIN_ROWS     3
 #define MAZE_MIN_COLS     3
