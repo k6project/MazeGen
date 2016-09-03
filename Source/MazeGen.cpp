@@ -1,13 +1,21 @@
-#include "MazeGen.h"
+#include "Engine/Global.h"
 
-#include <cstdio>
+#include "MazeGen.h"
 
 #include <Generator/Maze.h>
 #include <Generator/Recursive.h>
 
+#include <Engine/Platform/Logger.h>
+
 SC::Application * CreateSCApplication()
 {
     return SC::Application::Create<MazeGen>();
+}
+
+bool MazeGen::OnInitialized()
+{
+    SC_LOG_INFO("PWD = %s", getenv("PWD"));
+    return true;
 }
 
 int _old_main(int _argc, const char **_argv)

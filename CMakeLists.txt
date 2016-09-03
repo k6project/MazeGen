@@ -27,6 +27,8 @@ if(APPLE)
     find_library(OSXCoreVideoLib CoreVideo)
     mark_as_advanced(OSXCocoaLib OSXOpenGLLib OSXCoreVideoLib)
     set(LinkLibs ${LinkLibs} ${OSXCocoaLib} ${OSXOpenGLLib} ${OSXCoreVideoLib})
+    set(CMAKE_XCODE_ATTRIBUTE_GCC_PREFIX_HEADER "${EngineSourceDir}/Engine/Global.h")
+    set(CMAKE_XCODE_ATTRIBUTE_GCC_PRECOMPILE_PREFIX_HEADER "YES")
 endif(APPLE)
 
 if(WIN32)
@@ -46,6 +48,7 @@ endforeach()
 
 include_directories(AFTER "${EngineSourceDir}")
 include_directories(AFTER "${EngineExtLibDir}/Include")
+include_directories(AFTER "${EngineExtLibDir}/glm")
 
 # -------- PROJECT CMAKE --------
 

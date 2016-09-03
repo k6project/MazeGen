@@ -4,4 +4,9 @@
 
 class MazeGen : public SC::Application
 {
+    
+protected:
+    
+    virtual bool OnInitialized() override;
+    
 };
