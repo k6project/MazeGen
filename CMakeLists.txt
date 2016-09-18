@@ -3,11 +3,6 @@ project(MazeGen CXX)
 
 # -------- ENGINE CMAKE --------
 
-#Set XCode to use C++11, otherwise undefined nullptr
-set(CMAKE_XCODE_ATTRIBUTE_GCC_VERSION "com.apple.compilers.llvm.clang.1_0")
-set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LANGUAGE_STANDARD "c++0x")
-set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
-
 set(EngineSourceDir "${CMAKE_CURRENT_LIST_DIR}/Engine/Source")
 set(EngineExtLibDir "${CMAKE_CURRENT_LIST_DIR}/Engine/3rdParty")
 file(GLOB_RECURSE EngineHeaders LIST_DIRECTORIES false "${EngineSourceDir}/*.h")
@@ -25,10 +20,16 @@ if(APPLE)
     find_library(OSXCocoaLib Cocoa)
     find_library(OSXOpenGLLib OpenGL)
     find_library(OSXCoreVideoLib CoreVideo)
-    mark_as_advanced(OSXCocoaLib OSXOpenGLLib OSXCoreVideoLib)
-    set(LinkLibs ${LinkLibs} ${OSXCocoaLib} ${OSXOpenGLLib} ${OSXCoreVideoLib})
+    find_library(OSXMetal Metal)
+    find_library(OSXQuartzCore QuartzCore)
+    mark_as_advanced(OSXCocoaLib OSXOpenGLLib OSXCoreVideoLib OSXMetal OSXQuartzCore)
+    set(LinkLibs ${LinkLibs} ${OSXCocoaLib} ${OSXOpenGLLib} ${OSXCoreVideoLib} ${OSXMetal} ${OSXQuartzCore})
+    set(CMAKE_XCODE_ATTRIBUTE_GCC_VERSION "com.apple.compilers.llvm.clang.1_0")
+    set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LANGUAGE_STANDARD "c++0x")
+    set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
     set(CMAKE_XCODE_ATTRIBUTE_GCC_PREFIX_HEADER "${EngineSourceDir}/Engine/Global.h")
     set(CMAKE_XCODE_ATTRIBUTE_GCC_PRECOMPILE_PREFIX_HEADER "YES")
+    set(CMAKE_XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC "YES")
 endif(APPLE)
 
 if(WIN32)

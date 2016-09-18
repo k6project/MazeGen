@@ -4,42 +4,62 @@
 
 #include <Generator/Maze.h>
 #include <Generator/Recursive.h>
-
 #include <Engine/Platform/Logger.h>
 
-SC::Application * CreateSCApplication()
+using namespace SC;
+
+Application * CreateSCApplication()
 {
-    return SC::Application::Create<MazeGen>();
+    return Application::Create<MazeGen>();
+}
+
+static void DumpNode(const SceneNode &node, const string &prefix = "")
+{
+    printf("%s%s\n", prefix.c_str(), node.GetName());
+    SceneNode::Siblings children = node.GetChildren();
+    while (children)
+    {
+        SceneNode child = children++;
+        DumpNode(child, prefix + "    ");
+    }
 }
 
 bool MazeGen::OnInitialized()
 {
-    SC_LOG_INFO("PWD = %s", getenv("PWD"));
+    if (TheMaze.Generate(32, 20))
+    {
+        Scene.GetRootNode()
+            .AddChild("One")
+                .AddChild("One-and-a-quater")
+                    //.SetTransform(..., ..., ..., false)
+                    .GetParent()
+                .AddChild("One-and-a-half")
+                    .GetParent()
+                .GetParent()
+            .AddChild("Two")
+        ;
+        //construct geometry
+        //SceneNode &root = Scene.GetRootNode();
+        //root.AddChild("Floor", vec3(1,2,3), vec3(0), vec3(32.f, 20.f, 1.f))
+        //    .SetMesh()
+        //    .SetMaterial("")
+        //    .AddChild(...)
+        //        .SetMesh()
+        //        ...
+        //        .GetParent()
+        //    .AddChild(...)
+        //
+        //
+        /*
+         node contains entityID, which is used to fetch components
+         
+         */
+    }
+    DumpNode(Scene.GetRootNode());
     return true;
 }
 
-int _old_main(int _argc, const char **_argv)
+MazeGen::MazeGen()
+    : Scene("MazeScene")
 {
-    Maze maze;
-    maze.Generate(16, 16);
-    
-    for (Maze::IndexType r = 0; r < maze.GetRows(); r++)
-    {
-        for (Maze::IndexType c = 0; c < maze.GetColumns(); c++)
-        {
-            putc('.', stdout);
-        }
-        putc('\n', stdout);
-    }
-    
-    // create window
-    // setup renderer capable of clearing screen with black
-    
-    // in render loop:
-    //   if no setup has been done: setup buffers, textures and shaders
-    //   else if no geometry has been set: generate maze, create geometry
-    //   else render frame(dt clamped to 0.1 sec)
-    //   swap buffers
-    
-    return 0;
 }
