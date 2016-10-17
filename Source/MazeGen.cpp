@@ -5,6 +5,7 @@
 #include <Generator/Maze.h>
 #include <Generator/Recursive.h>
 #include <Engine/Platform/Logger.h>
+#include <Engine/Resource/Material.h>
 
 using namespace SC;
 
@@ -32,29 +33,20 @@ bool MazeGen::OnInitialized()
             .AddChild("One")
                 .AddChild("One-and-a-quater")
                     //.SetTransform(..., ..., ..., false)
+                    .SetDrawable("DefaultQuadMesh", "TexCoordView")
                     .GetParent()
                 .AddChild("One-and-a-half")
                     .GetParent()
                 .GetParent()
             .AddChild("Two")
         ;
-        //construct geometry
-        //SceneNode &root = Scene.GetRootNode();
-        //root.AddChild("Floor", vec3(1,2,3), vec3(0), vec3(32.f, 20.f, 1.f))
-        //    .SetMesh()
-        //    .SetMaterial("")
-        //    .AddChild(...)
-        //        .SetMesh()
-        //        ...
-        //        .GetParent()
-        //    .AddChild(...)
-        //
-        //
-        /*
-         node contains entityID, which is used to fetch components
-         
-         */
     }
+    
+    Material test;
+    test.Init({ { "Byte", ValueType::INT8 }, { "QWord", ValueType::INT64 } });
+    test.Set<int8_t>("Byte", -128);
+    test.Set<int64_t>("QWord", 1);
+    
     DumpNode(Scene.GetRootNode());
     return true;
 }

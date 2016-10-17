@@ -4,6 +4,7 @@
 
 #include <Engine/Application.h>
 #include <Engine/Systems/SceneGraph.h>
+#include <Engine/Resource/ResourceManager.h>
 
 class MazeGen : public SC::Application
 {
@@ -17,6 +18,8 @@ private:
     friend class SC::Application;
     
     MazeGen();
+    
+    SC::ResourceManager Resources;
     
     SC::SceneGraph Scene;
     
